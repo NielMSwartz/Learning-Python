@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% from 'partials/icons.html' import icon %}
+{% block content %}
+<div class="fade-in">
+  <div class="page-head">
+    <div><h1>My progress</h1><p>An honest view of what you've practised, where you're improving and what to tackle next. Everything is calculated from your own submissions.</p></div>
+  </div>
+
+  <div class="grid cols-4" id="totals">
+    <div class="card stat-card"><div class="stat-icon">{{ icon('trophy') }}</div><div class="stat-value">—</div><div class="stat-label">Projects completed</div></div>
+    <div class="card stat-card"><div class="stat-icon">{{ icon('bolt') }}</div><div class="stat-value">—</div><div class="stat-label">Challenges solved</div></div>
+    <div class="card stat-card"><div class="stat-icon">{{ icon('clock') }}</div><div class="stat-value">—</div><div class="stat-label">Coding hours</div></div>
+    <div class="card stat-card"><div class="stat-icon">{{ icon('check') }}</div><div class="stat-value">—</div><div class="stat-label">Test success rate</div></div>
+  </div>
+
+  <div class="grid cols-2" style="margin-top:16px">
+    <div class="card chart-card" style="grid-column:1/-1">
+      <h3>{{ icon('chart') }} Coding activity — last 30 days</h3>
+      <p class="muted small">Time spent in the editor; only focused minutes are counted.</p>
+      <div class="chart-wrap" id="activity-chart"></div>
+      <div class="legend"><span>Focused minutes per day</span></div>
+    </div>
+  </div>
+
+  <div class="grid cols-2" style="margin-top:16px">
+    <div class="card chart-card">
+      <h3>Strongest challenge categories</h3>
+      <div id="strong-areas" class="grid" style="gap:12px"></div>
+    </div>
+    <div class="card chart-card">
+      <h3>Areas to revisit</h3>
+      <div id="weak-areas" class="grid" style="gap:12px"></div>
+    </div>
+  </div>
+
+  <div class="grid cols-2" style="margin-top:16px">
+    <div class="card">
+      <h3>Level progress</h3>
+      <div id="level-progress" class="grid" style="gap:14px"></div>
+    </div>
+    <div class="card">
+      <h3>Suggested next steps</h3>
+      <div id="recommendations" class="grid" style="gap:10px"></div>
+    </div>
+  </div>
+
+  <div class="section-head"><h2>Achievements</h2><span class="spacer"></span><span class="muted small" id="achievement-count"></span></div>
+  <div class="grid cols-4" id="achievement-grid"></div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/stats.js') }}"></script>{% endblock %}

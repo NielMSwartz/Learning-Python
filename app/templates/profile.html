@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% from 'partials/icons.html' import icon %}
+{% block content %}
+<div class="fade-in" style="max-width:900px">
+  <div class="page-head"><div><h1>Settings</h1><p>Manage your account and make the editor work the way you like.</p></div></div>
+
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>{{ icon('settings') }} Account details</h3>
+      <div class="form-error" id="profile-error"></div>
+      <div class="form-success" id="profile-success"></div>
+      <form id="profile-form">
+        <div class="field"><label for="username">Username</label><input class="input" id="username" required></div>
+        <div class="field"><label for="email">Email</label><input class="input" id="email" type="email" required></div>
+        <p class="muted tiny">Member since <span id="created-at">—</span> · Current level <span id="account-level">—</span></p>
+        <button class="btn btn-primary" type="submit">Save details</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3>{{ icon('code') }} Editor preferences</h3>
+      <div class="form-error" id="prefs-error"></div>
+      <div class="form-success" id="prefs-success"></div>
+      <form id="prefs-form">
+        <div class="field"><label for="theme">Theme</label><select class="select" id="theme"><option value="dark">Dark</option><option value="light">Light</option></select></div>
+        <div class="field"><label for="font-size">Editor font size</label><select class="select" id="font-size"><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>18</option><option>20</option></select></div>
+        <div class="field"><label for="tab-size">Indent width</label><select class="select" id="tab-size"><option value="2">2 spaces</option><option value="4">4 spaces</option><option value="8">8 spaces</option></select></div>
+        <label class="small muted" style="display:flex;gap:8px;align-items:center;margin-bottom:16px"><input type="checkbox" id="line-wrapping"> Wrap long lines in the editor</label>
+        <label class="small muted" style="display:flex;gap:8px;align-items:center;margin-bottom:16px"><input type="checkbox" id="auto-hint"> Show keyword suggestions while typing</label>
+        <button class="btn btn-primary" type="submit">Save preferences</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;max-width:480px">
+    <h3>{{ icon('lock') }} Change password</h3>
+    <div class="form-error" id="password-error"></div>
+    <div class="form-success" id="password-success"></div>
+    <form id="password-form">
+      <div class="field"><label for="current-password">Current password</label><input class="input" id="current-password" type="password" autocomplete="current-password" required></div>
+      <div class="field"><label for="new-password">New password (8+ characters)</label><input class="input" id="new-password" type="password" autocomplete="new-password" minlength="8" required></div>
+      <button class="btn btn-ghost" type="submit">Update password</button>
+    </form>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>{{ icon('install') }} Install the app</h3>
+    <p class="muted small">Python Academy is a Progressive Web App. Use your browser's <strong>Install app</strong> option (or the install banner shown on supported browsers) to add it to your device. Learning materials are cached for offline reading after your first visit.</p>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/profile.js') }}"></script>{% endblock %}

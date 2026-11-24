@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% from 'partials/icons.html' import icon %}
+{% block content %}
+<div class="fade-in">
+  <div class="page-head"><div><h1>Coding challenges</h1><p>Focused problems with public examples and hidden tests. Hints are available when you need them — try the problem first.</p></div></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+    <div class="search-box">{{ icon('search') }}<input class="input" id="challenge-search" placeholder="Search challenges…"></div>
+    <select class="select" id="level-filter" style="width:auto"><option value="">All levels</option><option value="1">Beginner</option><option value="2">Intermediate</option><option value="3">Advanced</option><option value="4">Professional</option></select>
+    <select class="select" id="category-filter" style="width:auto"><option value="">All categories</option></select>
+  </div>
+  <div id="challenge-grid" class="grid cols-3"><span class="muted">Loading challenges…</span></div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/challenges.js') }}"></script>{% endblock %}

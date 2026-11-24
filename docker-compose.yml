@@ -1,0 +1,52 @@
+services:
+  web:
+    build: .
+    env_file: .env
+    environment:
+      FLASK_APP: wsgi.py
+      FLASK_CONFIG: production
+      EXECUTOR_URL: http://executor:9000
+      DISABLE_AUTO_SETUP: "1"
+      # Set SESSION_COOKIE_SECURE=1 behind HTTPS in production.
+      SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-0}
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-http://localhost:8000}
+    ports:
+      - "${PORT:-8000}:8000"
+    depends_on:
+      executor:
+        condition: service_healthy
+    volumes:
+      - academy-data:/app/instance
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+  executor:
+    build: ./executor
+    environment:
+      EXECUTOR_TOKEN: ${EXECUTOR_TOKEN:?Set EXECUTOR_TOKEN in .env}
+      EXECUTION_TIMEOUT_SECONDS: ${EXECUTION_TIMEOUT_SECONDS:-5}
+      EXECUTION_MEMORY_MB: ${EXECUTION_MEMORY_MB:-192}
+      EXECUTOR_WORKDIR: /tmp/python-academy-exec
+    expose:
+      - "9000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:9000/health', timeout=3)"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=256m
+    pids_limit: 128
+    mem_limit: 384m
+    cpus: 0.75
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  academy-data:

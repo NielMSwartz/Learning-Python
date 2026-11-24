@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% from 'partials/icons.html' import icon %}
+{% block content %}
+<div class="fade-in" style="max-width:980px">
+  <div class="page-head">
+    <div><a href="/library" class="small muted">← Knowledge library</a><h1 id="topic-title">Loading…</h1><p id="topic-summary"></p></div>
+    <span class="spacer"></span>
+    <button class="btn btn-ghost" id="bookmark-topic">{{ icon('bookmark') }} Bookmark</button>
+  </div>
+  <div class="grid cols-2">
+    <div class="card" style="grid-column:1/-1"><h3>Explanation</h3><div id="topic-explanation" class="small"></div></div>
+    <div class="card"><h3>Code examples</h3><div id="topic-examples" class="grid" style="gap:12px"></div></div>
+    <div>
+      <div class="card" style="margin-bottom:16px"><h3>Why this matters</h3><p class="small" id="topic-why"></p></div>
+      <div class="card"><h3>Common mistakes</h3><ul class="check-list" id="topic-mistakes"></ul></div>
+    </div>
+    <div class="card" style="grid-column:1/-1" id="exercise-box">
+      <h3>{{ icon('bolt') }} Practice this concept</h3>
+      <p class="small muted">Short exercises are tracked in your statistics and count towards achievements.</p>
+      <div id="exercise-link"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/topic.js') }}"></script>{% endblock %}

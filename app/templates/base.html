@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" data-theme="{{ current_user.theme if current_user.is_authenticated else 'dark' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#15191f">
+  <meta name="description" content="Python Academy — learn Python by building real projects, solving challenges and writing code.">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/static/icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="/static/icons/icon-192.png">
+  <title>{{ title or 'Python Academy' }} · Python Academy</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/codemirror/lib_codemirror.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/codemirror/theme_material.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/codemirror/addon_hint_show-hint.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body data-coding="{% if request.path in ['/playground', '/ide'] or '/learn/project/' in request.path or '/challenges/' in request.path or '/practice/' in request.path %}1{% else %}0{% endif %}"
+      data-font-size="{{ current_user.preference('font_size', 14) if current_user.is_authenticated else 14 }}"
+      data-tab-size="{{ current_user.preference('tab_size', 4) if current_user.is_authenticated else 4 }}"
+      data-line-wrap="{{ '1' if current_user.preference('line_wrapping', False) else '0' }}">
+{% from 'partials/icons.html' import icon %}
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="{{ url_for('web.dashboard') }}">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#FFD43B" d="M11.9 2.2c-4.4 0-4.1 1.9-4.1 1.9l.1 2h4.1v.6H5.7S3.9 6.4 3.9 10.1s1.6 3.7 1.6 3.7h1v-2.3s-.1-1.6 1.5-1.6h4.3s1.4.1 1.4-1.4V4.4s.2-2.2-2-2.2ZM9.4 3.6a.7.7 0 1 1 0 1.4.7.7 0 0 1 0-1.4Z"/><path fill="#FFD43B" d="M12.1 21.8c4.4 0 4.1-1.9 4.1-1.9l-.1-2h-4.1v-.6h6.3s1.8-.3 1.8-3.7-1.6-3.7-1.6-3.7h-1v2.3s.1 1.6-1.5 1.6h-4.3s-1.4-.1-1.4 1.4v3.8s-.2 2.8 1.8 2.8Zm2.5-1.4a.7.7 0 1 1 0-1.4.7.7 0 0 1 0 1.4Z"/></svg>
+      </span>
+      <span class="brand-text"><strong>Python Academy</strong><span>learn by doing</span></span>
+    </a>
+
+    <nav>
+      <div class="nav-group">
+        <div class="nav-label">Workspace</div>
+        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{{ url_for('web.dashboard') }}">{{ icon('home') }} Dashboard</a>
+        <a class="nav-link {% if request.path.startswith('/learn') %}active{% endif %}" href="{{ url_for('web.learn') }}">{{ icon('trophy') }} Learning pathway</a>
+        <a class="nav-link {% if request.path.startswith('/challenges') %}active{% endif %}" href="{{ url_for('web.challenges') }}">{{ icon('bolt') }} Challenges</a>
+        <a class="nav-link {% if request.path.startswith('/library') or request.path.startswith('/practice') %}active{% endif %}" href="{{ url_for('web.library') }}">{{ icon('book') }} Knowledge library</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">Create</div>
+        <a class="nav-link {% if request.path == '/playground' %}active{% endif %}" href="{{ url_for('web.playground') }}">{{ icon('terminal') }} Playground</a>
+        <a class="nav-link {% if request.path == '/ide' %}active{% endif %}" href="{{ url_for('web.ide') }}">{{ icon('code') }} IDE</a>
+        <a class="nav-link {% if request.path == '/snippets' %}active{% endif %}" href="{{ url_for('web.snippets') }}">{{ icon('snippet') }} Snippets</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">Account</div>
+        <a class="nav-link {% if request.path == '/stats' %}active{% endif %}" href="{{ url_for('web.stats') }}">{{ icon('chart') }} My progress</a>
+        <a class="nav-link {% if request.path == '/profile' %}active{% endif %}" href="{{ url_for('web.profile') }}">{{ icon('settings') }} Settings</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">Build · Run · Reflect · Repeat<br><span class="small">v1.0</span></div>
+  </aside>
+
+  <div class="main-column">
+    <header class="topbar">
+      <button class="menu-button" id="menu-toggle" aria-label="Open navigation">{{ icon('menu', 24) }}</button>
+      <div class="topbar-title">{{ title or 'Python Academy' }}<small>{{ 'Your personal Python learning environment' if current_user.is_authenticated else 'Learn Python by doing' }}</small></div>
+      <div class="topbar-actions">
+        {% if current_user.is_authenticated %}
+        <button class="icon-button" id="theme-toggle" title="Toggle light / dark theme" aria-label="Toggle theme">{{ icon('sun') }}</button>
+        <span class="avatar" title="{{ current_user.username }}">{{ current_user.username[:1] }}</span>
+        {% endif %}
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="install-banner" id="install-banner">
+        {{ icon('install', 22) }}
+        <span><strong>Install Python Academy</strong><br><span class="muted small">Use it like an app from your browser, even offline.</span></span>
+        <span class="spacer"></span>
+        <button class="btn btn-accent btn-sm" id="install-btn">Install</button>
+        <button class="icon-button" id="install-dismiss" aria-label="Dismiss">×</button>
+      </div>
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+
+{% if current_user.is_authenticated %}
+<nav class="mobile-nav" aria-label="Mobile navigation">
+  <a href="{{ url_for('web.dashboard') }}" class="{% if request.path == '/' %}active{% endif %}">{{ icon('home') }}<span>Home</span></a>
+  <a href="{{ url_for('web.learn') }}" class="{% if request.path.startswith('/learn') %}active{% endif %}">{{ icon('trophy') }}<span>Learn</span></a>
+  <a href="{{ url_for('web.playground') }}" class="{% if request.path == '/playground' %}active{% endif %}">{{ icon('terminal') }}<span>Play</span></a>
+  <a href="{{ url_for('web.ide') }}" class="{% if request.path == '/ide' %}active{% endif %}">{{ icon('code') }}<span>IDE</span></a>
+  <a href="{{ url_for('web.stats') }}" class="{% if request.path == '/stats' %}active{% endif %}">{{ icon('chart') }}<span>Stats</span></a>
+</nav>
+{% endif %}
+
+<div id="toast-stack" class="toast-stack" aria-live="polite"></div>
+{% block modals %}{% endblock %}
+
+<script src="{{ url_for('static', filename='vendor/codemirror/lib_codemirror.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/codemirror/mode_python_python.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/codemirror/addon_edit_matchbrackets.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/codemirror/addon_edit_closebrackets.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/codemirror/addon_comment_comment.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/codemirror/addon_hint_show-hint.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

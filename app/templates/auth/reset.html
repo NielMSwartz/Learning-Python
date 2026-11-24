@@ -1,0 +1,35 @@
+{% extends 'auth/base_auth.html' %}
+{% block auth_content %}
+<h1>Choose a new password</h1>
+{% if not token %}
+<p class="text-red">This reset link is invalid or has expired. Request a new one from the sign-in page.</p>
+<div class="auth-links"><a href="{{ url_for('web.forgot') }}">Request a new link</a></div>
+{% else %}
+<p class="muted">Use at least 8 characters. The link can only be used once.</p>
+<div class="form-error" id="form-error"></div>
+<form id="new-password-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <input type="hidden" id="token" value="{{ token }}">
+  <div class="field"><label for="password">New password</label><input class="input" id="password" type="password" minlength="8" required></div>
+  <div class="field"><label for="confirm">Confirm password</label><input class="input" id="confirm" type="password" minlength="8" required></div>
+  <button class="btn btn-primary btn-block" type="submit">Update password</button>
+</form>
+{% endif %}
+{% endblock %}
+{% block auth_scripts %}
+<script>
+document.getElementById('new-password-form')?.addEventListener('submit', async event => {
+  event.preventDefault();
+  const error = document.getElementById('form-error');
+  error.textContent = '';
+  const password = document.getElementById('password').value;
+  if (password !== document.getElementById('confirm').value) { error.textContent = 'Passwords do not match'; return; }
+  try {
+    await PA.api('/api/auth/reset', { method: 'POST', body: {
+      token: document.getElementById('token').value, password
+    }});
+    location.href = '/login';
+  } catch (err) { error.textContent = err.message; }
+});
+</script>
+{% endblock %}

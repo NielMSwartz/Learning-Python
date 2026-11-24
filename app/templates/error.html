@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#15191f">
+  <title>{{ error.code or 500 }} · Python Academy</title>
+  <link rel="icon" href="/static/icons/icon-192.png" type="image/png">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body>
+<div class="auth-wrap">
+  <div class="auth-card" style="text-align:center">
+    <div class="stat-value text-yellow" style="font-size:60px">{{ error.code or 500 }}</div>
+    <h1>Something went wrong</h1>
+    <p class="muted">{{ error.description or 'An unexpected error occurred.' }}</p>
+    <a class="btn btn-primary" href="/">Back to dashboard</a>
+  </div>
+</div>
+</body>
+</html>

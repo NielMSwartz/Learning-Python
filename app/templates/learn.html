@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% from 'partials/icons.html' import icon %}
+{% block content %}
+<div class="fade-in">
+  <div class="page-head">
+    <div><h1>Learning pathway</h1><p>Four levels, each unlocked by demonstrating competence in the one before it. Projects are the core — lessons and challenges support them.</p></div>
+  </div>
+  <div id="levels"><span class="muted">Loading pathway…</span></div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/pathway.js') }}"></script>{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% from 'partials/icons.html' import icon %}
+{% block content %}
+<div class="fade-in">
+  <div class="page-head"><div><h1>Python knowledge library</h1><p>Look up a concept, read the explanation and examples, then test yourself with a short exercise. Bookmark anything you want to revisit.</p></div></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+    <div class="search-box">{{ icon('search') }}<input class="input" id="library-search" placeholder="Search topics, e.g. generators, dictionaries, decorators…"></div>
+    <select class="select" id="level-filter" style="width:auto"><option value="">All levels</option><option value="1">Beginner</option><option value="2">Intermediate</option><option value="3">Advanced</option><option value="4">Professional</option></select>
+    <button class="btn btn-ghost" id="bookmark-filter">{{ icon('bookmark') }} Bookmarked</button>
+  </div>
+  <div class="chip-row" id="category-chips"></div>
+  <div id="topic-grid" class="grid cols-3"><span class="muted">Loading topics…</span></div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/library.js') }}"></script>{% endblock %}

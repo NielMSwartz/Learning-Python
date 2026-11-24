@@ -1,0 +1,31 @@
+{% extends 'auth/base_auth.html' %}
+{% block auth_content %}
+<h1>Create your account</h1>
+<p class="muted">Your progress, projects and code stay private to you.</p>
+<div class="form-error" id="form-error"></div>
+<form id="register-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="field"><label for="username">Username</label><input class="input" id="username" autocomplete="username" minlength="3" maxlength="32" required></div>
+  <div class="field"><label for="email">Email</label><input class="input" id="email" type="email" autocomplete="email" required></div>
+  <div class="field"><label for="password">Password (8+ characters)</label><input class="input" id="password" type="password" autocomplete="new-password" minlength="8" required></div>
+  <button class="btn btn-accent btn-block" type="submit">Start learning</button>
+</form>
+<div class="auth-links"><span>Already have an account?</span><a href="{{ url_for('web.login') }}">Sign in</a></div>
+{% endblock %}
+{% block auth_scripts %}
+<script>
+document.getElementById('register-form').addEventListener('submit', async event => {
+  event.preventDefault();
+  const error = document.getElementById('form-error');
+  error.textContent = '';
+  try {
+    await PA.api('/api/auth/register', { method: 'POST', body: {
+      username: document.getElementById('username').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      password: document.getElementById('password').value
+    }});
+    location.href = '/';
+  } catch (err) { error.textContent = err.message; }
+});
+</script>
+{% endblock %}

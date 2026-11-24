@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% from 'partials/icons.html' import icon %}
+{% block content %}
+<div class="fade-in">
+  <div class="hero">
+    <span class="badge yellow">{{ icon('flame') }} <span id="hero-streak">Streak loading…</span></span>
+    <h1 style="margin-top:12px">Welcome back, {{ current_user.username }}.</h1>
+    <p>Small, consistent sessions beat occasional marathons. Pick up where you left off and write some Python.</p>
+    <div class="hero-actions" id="continue-area">
+      <span class="muted">Looking for your next step…</span>
+    </div>
+  </div>
+
+  <div class="section-head"><h2>Your snapshot</h2><span class="spacer"></span><a href="/stats" class="small">View all statistics →</a></div>
+  <div class="grid cols-4" id="stat-grid">
+    <div class="card stat-card"><div class="stat-icon">{{ icon('trophy') }}</div><div class="stat-value" id="stat-level">—</div><div class="stat-label">Current level</div></div>
+    <div class="card stat-card"><div class="stat-icon">{{ icon('clock') }}</div><div class="stat-value" id="stat-hours">—</div><div class="stat-label">Coding hours</div></div>
+    <div class="card stat-card"><div class="stat-icon">{{ icon('code') }}</div><div class="stat-value" id="stat-projects">—</div><div class="stat-label">Projects completed</div></div>
+    <div class="card stat-card"><div class="stat-icon">{{ icon('check') }}</div><div class="stat-value" id="stat-exercises">—</div><div class="stat-label">Exercises completed</div></div>
+  </div>
+
+  <div class="grid cols-2" style="margin-top:16px">
+    <div class="card">
+      <h3>{{ icon('book') }} Current module</h3>
+      <p class="muted small" id="module-name">Loading…</p>
+      <div class="progress-row"><span id="module-progress-label">Projects in this level</span><span id="module-progress-count">—</span></div>
+      <div class="progress"><span id="module-progress-bar" style="width:0%"></span></div>
+      <div style="margin-top:18px" class="button-row">
+        <a class="btn btn-primary btn-sm" href="/learn">{{ icon('arrow') }} Continue pathway</a>
+        <a class="btn btn-ghost btn-sm" href="/library">Browse topics</a>
+      </div>
+    </div>
+    <div class="card">
+      <h3>{{ icon('bolt') }} Quick launch</h3>
+      <p class="muted small">Jump straight into writing code.</p>
+      <div class="grid cols-2" style="gap:10px">
+        <a class="btn btn-ghost" href="/playground">{{ icon('terminal') }} Playground</a>
+        <a class="btn btn-ghost" href="/ide">{{ icon('code') }} Full IDE</a>
+        <a class="btn btn-ghost" href="/challenges">{{ icon('bolt') }} Challenges</a>
+        <a class="btn btn-ghost" href="/snippets">{{ icon('snippet') }} Snippets</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid cols-2" style="margin-top:16px">
+    <div class="card">
+      <div class="section-head" style="margin-top:0"><h2>Recently worked on</h2></div>
+      <div id="recent-projects" class="grid" style="gap:10px"><span class="muted small">Loading…</span></div>
+    </div>
+    <div class="card">
+      <div class="section-head" style="margin-top:0"><h2>Recommended challenges</h2><a href="/challenges" class="small">See all →</a></div>
+      <div id="recommended" class="grid" style="gap:10px"><span class="muted small">Loading…</span></div>
+    </div>
+  </div>
+
+  <div class="section-head"><h2>Personal achievements</h2><span class="spacer"></span><a href="/stats" class="small">All achievements →</a></div>
+  <div class="grid cols-4" id="achievement-grid"></div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>{% endblock %}

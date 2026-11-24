@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% from 'partials/icons.html' import icon %}
+{% block content %}
+<div class="fade-in" data-item-type="{{ item_type }}" data-item-slug="{{ item_slug }}" id="workspace-root">
+  <div class="page-head">
+    <div>
+      <a href="{% if item_type == 'project' %}/learn{% elif item_type == 'challenge' %}/challenges{% else %}/library{% endif %}" class="small muted">← Back</a>
+      <h1>{{ item_title }}</h1>
+      <p id="workspace-subtitle">Level {{ item_level }} · {{ item_type | capitalize }} workspace</p>
+    </div>
+    <span class="spacer"></span>
+    <span class="badge blue" id="workspace-status">Loading…</span>
+  </div>
+
+  <div class="mobile-editor-tabs">
+    <button class="btn btn-ghost btn-sm" data-mobile-tab="brief">Brief</button>
+    <button class="btn btn-primary btn-sm" data-mobile-tab="editor">Editor</button>
+    <button class="btn btn-ghost btn-sm" data-mobile-tab="console">Console</button>
+  </div>
+
+  <div class="workspace">
+    <div class="panel" id="brief-panel">
+      <div class="panel-head">{{ icon('book') }} <span id="brief-title">Brief</span></div>
+      <div class="panel-body" id="brief-content"><span class="muted small">Loading brief…</span></div>
+    </div>
+
+    <div class="panel code-panel" id="editor-panel">
+      <div class="code-toolbar">
+        <button class="btn btn-accent btn-sm" id="run-btn" title="Run code (Ctrl+Enter)">{{ icon('play') }} Run</button>
+        <button class="btn btn-ghost btn-sm" id="stop-btn" disabled>{{ icon('stop') }} Stop</button>
+        <button class="btn btn-primary btn-sm" id="submit-btn">{{ icon('check') }} Submit solution</button>
+        <button class="btn btn-ghost btn-sm" id="format-btn">{{ icon('edit') }} Format</button>
+        <span class="spacer"></span>
+        <button class="btn btn-ghost btn-sm" id="reset-btn" title="Restore starter code">{{ icon('refresh') }} Reset</button>
+      </div>
+      <div class="editor-host"><textarea id="code-input" spellcheck="false"></textarea></div>
+      <div class="console">
+        <div class="console-tabs">
+          <button class="console-tab active" data-console-tab="output">Output</button>
+          <button class="console-tab" data-console-tab="errors">Errors</button>
+          <button class="console-tab" data-console-tab="tests">Test results</button>
+          <span class="spacer" style="flex:1"></span>
+          <button class="btn btn-ghost btn-sm" id="clear-btn" style="margin:4px 8px">Clear</button>
+        </div>
+        <div class="console-output" id="console-output"><span class="empty-console">Run your code to see output here.</span></div>
+        <div class="console-output error" id="console-errors" style="display:none"><span class="empty-console">No errors.</span></div>
+        <div class="console-output" id="console-tests" style="display:none"><span class="empty-console">Submit a solution to see test results.</span></div>
+        <div style="padding:8px 12px;border-top:1px solid var(--line);display:flex;gap:8px;align-items:center">
+          <span class="muted tiny">stdin:</span>
+          <input class="input" id="stdin-input" placeholder="Optional program input" style="padding:6px 9px;font-family:var(--mono);font-size:12px">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/workspace.js') }}"></script>{% endblock %}

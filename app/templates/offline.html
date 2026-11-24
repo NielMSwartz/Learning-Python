@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#15191f">
+  <title>Offline · Python Academy</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/static/icons/icon-192.png" type="image/png">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body>
+<div class="auth-wrap">
+  <div class="auth-card" style="text-align:center">
+    <div class="brand-mark" style="margin:0 auto 16px">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#FFD43B" d="M11.9 2.2c-4.4 0-4.1 1.9-4.1 1.9l.1 2h4.1v.6H5.7S3.9 6.4 3.9 10.1s1.6 3.7 1.6 3.7h1v-2.3s-.1-1.6 1.5-1.6h4.3s1.4.1 1.4-1.4V4.4s.2-2.2-2-2.2ZM9.4 3.6a.7.7 0 1 1 0 1.4.7.7 0 0 1 0-1.4Z"/><path fill="#FFD43B" d="M12.1 21.8c4.4 0 4.1-1.9 4.1-1.9l-.1-2h-4.1v-.6h6.3s1.8-.3 1.8-3.7-1.6-3.7-1.6-3.7h-1v2.3s.1 1.6-1.5 1.6h-4.3s-1.4-.1-1.4 1.4v3.8s-.2 2.8 1.8 2.8Zm2.5-1.4a.7.7 0 1 1 0-1.4.7.7 0 0 1 0 1.4Z"/></svg>
+    </div>
+    <h1>You're offline</h1>
+    <p class="muted">Python Academy can't reach the server right now. Pages and learning materials you've already visited are available from your device's cache.</p>
+    <div class="button-row" style="justify-content:center">
+      <a class="btn btn-primary" href="/">Try again</a>
+      <button class="btn btn-ghost" onclick="location.reload()">Reload</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

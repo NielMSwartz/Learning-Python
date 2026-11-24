@@ -1,0 +1,35 @@
+{% extends 'auth/base_auth.html' %}
+{% block auth_content %}
+<h1>Reset password</h1>
+<p class="muted">Enter your email address and we'll create a one-time reset link.</p>
+<div class="form-error" id="form-error"></div>
+<div class="form-success" id="form-success"></div>
+<form id="reset-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="field"><label for="email">Email</label><input class="input" id="email" type="email" required></div>
+  <button class="btn btn-primary btn-block" type="submit">Create reset link</button>
+</form>
+<div class="auth-links"><a href="{{ url_for('web.login') }}">Back to sign in</a></div>
+<div id="link-box" style="display:none;margin-top:16px;padding:12px;border:1px dashed var(--yellow);border-radius:10px;word-break:break-all" class="small"></div>
+{% endblock %}
+{% block auth_scripts %}
+<script>
+document.getElementById('reset-form').addEventListener('submit', async event => {
+  event.preventDefault();
+  const error = document.getElementById('form-error');
+  const success = document.getElementById('form-success');
+  error.textContent = ''; success.textContent = '';
+  try {
+    const data = await PA.api('/api/auth/reset-request', { method: 'POST', body: {
+      email: document.getElementById('email').value.trim()
+    }});
+    success.textContent = data.message;
+    if (data.reset_link) {
+      const box = document.getElementById('link-box');
+      box.style.display = 'block';
+      box.innerHTML = 'One-time link: <a href="' + PA.escapeHtml(data.reset_link) + '">Open password reset</a>';
+    }
+  } catch (err) { error.textContent = err.message; }
+});
+</script>
+{% endblock %}
