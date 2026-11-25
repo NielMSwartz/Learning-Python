@@ -8,11 +8,16 @@ from __future__ import annotations
 
 import hmac
 import os
+from pathlib import Path
 
+from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 from werkzeug.exceptions import BadRequest
 
 from engine import ValidationError, execute
+
+# Local runs share the web app's .env; Docker passes the same values explicitly.
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 2 * 1024 * 1024

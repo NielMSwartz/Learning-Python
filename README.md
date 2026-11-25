@@ -124,9 +124,11 @@ between the web app and executor.
 Terminal 1 — execution service:
 
 ```powershell
-$env:EXECUTOR_TOKEN = "the-token-from-your-.env"
 python executor/server.py
 ```
+
+The executor reads `EXECUTOR_TOKEN` from the same `.env` file during local runs;
+Docker passes the value explicitly.
 
 Terminal 2 — web application:
 
